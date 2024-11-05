@@ -1,1 +1,2 @@
 # LeagueChamps
+A simple application that will allow for randomly selecting a champion, and customizing the pool of champions (and roles for each champion) available for the roll. To run the application simply extract the zip file and run the exe. Be aware that once opened the application will only close if done so through right clicking the tray icon and selecting close, or simply alt+f4 (or a random crash but I'm sure that won't happen).
