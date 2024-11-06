@@ -1,2 +1,9 @@
-# LeagueChamps
-A simple application that will allow for randomly selecting a champion, and customizing the pool of champions (and roles for each champion) available for the roll. To run the application simply extract the zip file and run the exe. Be aware that once opened the application will only close if done so through right clicking the tray icon and selecting close, or simply alt+f4 (or a random crash but I'm sure that won't happen).
+# LChampRand
+Simple app inspired by Elo.rip with a customizable champion pool and user defined character roles.
+Randomly generate a character based on lane, or select All for any.
+
+To open the application simply extract the zip file and run the exe.
+
+Do mind, the application only minimizes on close.
+To fully exit the app, either right click on the tray icon and select close or press 'Alt + F4'
+(or just wait for it to crash cause im a stupid idiot and all my projects are dumb stupid bad)
