@@ -31,9 +31,10 @@ namespace LeagueChamps
 
             for (int i = 0; i < ChampController.champs.Count; i++)
             {
-                foreach (Role role in ChampController.champs[i].Roles)
+                for (int x = 0; x < ChampController.champs[i].Roles.Length; x++)
                 {
-                    sortedChamps[(int)role].Add(i);
+                    if (ChampController.champs[i].Roles[x])
+                        sortedChamps[x].Add(i);
                 }
             }
 
@@ -118,38 +119,38 @@ namespace LeagueChamps
 
         private void Remove(object sender, RoutedEventArgs e)
         {
-            MessageBoxResult conf = MessageBox.Show("Are you sure?", "Delete Confirmation", MessageBoxButton.YesNo);
+            //MessageBoxResult conf = MessageBox.Show("Are you sure?", "Delete Confirmation", MessageBoxButton.YesNo);
 
-            if (conf == MessageBoxResult.No)
-                return;
+            //if (conf == MessageBoxResult.No)
+            //    return;
 
-            //update sorted role lists
-            foreach (Role role in ChampController.champs[rolledChamp].Roles)
-            {
-                //get where the index to remove was and remove the entry
-                var indexToRemove = sortedChamps[(int)role].Find(num => num == rolledChamp);
-                sortedChamps[(int)role].Remove(rolledChamp);
-                //decrease entries after the one removed by one
-                for (int i = indexToRemove; i < sortedChamps[(int)role].Count(); i++)
-                {
-                    sortedChamps[(int)role][i] -= 1;
-                }
-            }
+            ////update sorted role lists
+            //foreach (Role role in ChampController.champs[rolledChamp].Roles)
+            //{
+            //    //get where the index to remove was and remove the entry
+            //    var indexToRemove = sortedChamps[(int)role].Find(num => num == rolledChamp);
+            //    sortedChamps[(int)role].Remove(rolledChamp);
+            //    //decrease entries after the one removed by one
+            //    for (int i = indexToRemove; i < sortedChamps[(int)role].Count(); i++)
+            //    {
+            //        sortedChamps[(int)role][i] -= 1;
+            //    }
+            //}
 
-            DisableEmptyRoleButs();
+            //DisableEmptyRoleButs();
 
-            //remove champion
-            ChampController.champs.RemoveAt(rolledChamp);
-            ChampController.SaveData();
+            ////remove champion
+            //ChampController.champs.RemoveAt(rolledChamp);
+            //ChampController.SaveData();
 
-            //disable remove button
-            removeBut.IsEnabled = false;
+            ////disable remove button
+            //removeBut.IsEnabled = false;
 
-            //reset name label
-            name.Content = defLabel;
+            ////reset name label
+            //name.Content = defLabel;
 
-            //set rolled champ to -1
-            rolledChamp = -1;
+            ////set rolled champ to -1
+            //rolledChamp = -1;
         }
     }
 }

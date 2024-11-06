@@ -33,6 +33,10 @@ namespace LeagueChamps
                 StackPanel curPan = new StackPanel();
                 curPan.Orientation = Orientation.Horizontal;
 
+                //enabled checkbox
+                CheckBox enabled = new CheckBox();
+                enabled.IsChecked = ChampController.champs[i].Enabled;
+
                 //image
                 Border brdr = new Border();
                 Image img = new Image();
@@ -57,17 +61,16 @@ namespace LeagueChamps
                     roles[x] = new CheckBox();
                     roles[x].VerticalAlignment = VerticalAlignment.Center;
                     roles[x].Margin = new Thickness(10, 0, 0, 0);
-                    roles[x].Content = (Role)x;
-
-                    foreach (Role role in ChampController.champs[i].Roles)
-                    {
-                        if (role == (Role)x)
-                        {
-                            roles[x].IsChecked = true;
-                        }
-                    }
+                    roles[x].IsChecked = ChampController.champs[i].Roles[x];
                 }
                 roles[0].Margin = new Thickness(20, 0, 0, 0);
+
+                //set role names
+                roles[0].Content = "Sup";
+                roles[1].Content = "Bot";
+                roles[2].Content = "Mid";
+                roles[3].Content = "Jun";
+                roles[4].Content = "Top";
 
                 //add control buttons
                 StackPanel ctrlButs = new StackPanel();
@@ -90,6 +93,7 @@ namespace LeagueChamps
 
                 //add all elements to current stack panel
                 curPan.Margin = new Thickness(10, 10, 0, 0);
+                curPan.Children.Add(enabled);
                 curPan.Children.Add(brdr);
                 curPan.Children.Add(name);
                 foreach (CheckBox box in roles)
@@ -113,7 +117,6 @@ namespace LeagueChamps
             StackPanel curPan = VisualTreeHelper.GetParent(butPan) as StackPanel;
 
             //change the name and roles of the champ the panel is responsible for
-            List<Role> newRoles = new List<Role>();
             int curChampInd = editPanel.Children.IndexOf(curPan) - listStartIndex;
 
             //get important children
@@ -127,18 +130,18 @@ namespace LeagueChamps
                 MessageBox.Show("Name already matches another champion, aborted changes");
                 return;
             }
+
             ImgHandler.RenameImage(ChampController.champs[curChampInd].Name, curTxtBox.Text, curImg);
             ChampController.champs[curChampInd].Name = curTxtBox.Text;
 
             //save roles
-            foreach (CheckBox check in curChecks)
+            ChampController.champs[curChampInd].Enabled = (bool)curChecks[0].IsChecked;
+            for (int i = 1; i < curChecks.Length; i++)
             {
-                if (check.IsChecked == true)
-                    newRoles.Add((Role)check.Content);
+                ChampController.champs[curChampInd].Roles[i-1] = (bool)curChecks[i].IsChecked;
             }
 
             //apply changes
-            ChampController.champs[curChampInd].Roles = newRoles.ToArray();
             var champ = ChampController.champs[curChampInd];
             ChampController.SortChamps();
             ChampController.SaveData();

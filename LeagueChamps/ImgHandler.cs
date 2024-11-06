@@ -27,6 +27,8 @@ namespace LeagueChamps
 
         public static void RenameImage(string name, string newName, Image img)
         {
+            if (name == newName)
+                return;
             if (!File.Exists(filePath + name + ".png"))
                 return;
             File.Copy(filePath + name + ".png", filePath + newName + ".png");

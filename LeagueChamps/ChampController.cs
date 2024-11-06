@@ -53,7 +53,7 @@ namespace LeagueChamps
             return neededSorting;
         }
 
-        public static bool AddChampion(string name, Role[] roles)
+        public static bool AddChampion(string name, bool[] roles)
         {
             try
             {
@@ -71,47 +71,16 @@ namespace LeagueChamps
                 }
 
                 //throw an error if no roles were given
-                if (roles.Length == 0)
+                if (roles.Length != 5)
                 {
-                    throw new Exception("Must have at least one role");
-                }
-
-                //make sure all role entries are unique
-                if (roles.Length > 1)
-                {
-                    List<Role> uniqRoles = new List<Role>();
-
-                    foreach (Role role in roles)
-                    {
-                        //if already contains all roles break out of loop
-                        if (uniqRoles.Count == 5)
-                            break;
-
-                        //loop through unique roles and add role if not present
-                        bool add = true;
-                        foreach (Role uniqRole in uniqRoles)
-                        {
-                            if (uniqRole == role)
-                            {
-                                add = false;
-                                break;
-                            }
-                        }
-                        if (add)
-                        {
-                            uniqRoles.Add(role);
-                        }
-                    }
-
-                    //replace roles with unique roles
-                    roles = uniqRoles.ToArray();
+                    throw new Exception("Must have 5 roles");
                 }
 
                 //add champion to list and save updated list to file
-                champs.Add(new Champion { Name = name, Roles = roles });
+                champs.Add(new Champion { Enabled = true, Name = name, Roles = roles });
                 SortChamps();
                 SaveData();
-                MessageBox.Show("Added successfully");
+                //MessageBox.Show("Added successfully");
                 return true;
             }
             catch (Exception ex)

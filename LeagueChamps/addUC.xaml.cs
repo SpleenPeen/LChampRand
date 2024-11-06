@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -20,29 +21,16 @@ namespace LeagueChamps
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             string name = "";
-            List<Role> list = new List<Role>();
+            bool[] roles = new bool[5];
+            var boxes = addGrid.Children.OfType<CheckBox>().ToArray();
 
-            for (int i = 0; i < VisualTreeHelper.GetChildrenCount(addGrid); i++)
+            name = addGrid.Children.OfType<TextBox>().First().Text;
+            for (int i = 0; i < boxes.Length; i++)
             {
-                var child = VisualTreeHelper.GetChild(addGrid, i);
-                if (child is TextBox)
-                {
-                    var txtBox = (TextBox)child;
-                    name = txtBox.Text;
-                    continue;
-                }
-
-                if(child is CheckBox)
-                {
-                    var check = (CheckBox)child;
-                    if (check.IsChecked != true)
-                        continue;
-
-                    list.Add(Enum.Parse<Role>(check.Content.ToString()));
-                }
+                roles[i] = (bool)boxes[i].IsChecked;
             }
 
-            if(ChampController.AddChampion(name, list.ToArray()))
+            if(ChampController.AddChampion(name, roles))
             {
                 if (imgFilepath == null)
                     return;
