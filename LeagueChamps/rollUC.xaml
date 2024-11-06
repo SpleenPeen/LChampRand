@@ -12,7 +12,7 @@
             <Image x:Name="rollImg"/>
         </Border>
         <Label Name="name" Content="None" HorizontalAlignment="Center" Margin="0,272,0,0" VerticalAlignment="Top" FontSize="20" Foreground="#FFD0D0D0"/>
-        <Button Name="removeBut" Content="Remove" HorizontalAlignment="Left" Margin="477,201,0,0" VerticalAlignment="Top" Height="33" Width="73" Background="#FF464646" Click="Remove" Foreground="#FFD0D0D0" BorderBrush="#00707070"/>
+        <Button Name="disableBut" Content="Disable" HorizontalAlignment="Left" Margin="477,201,0,0" VerticalAlignment="Top" Height="33" Width="73" Background="#FF464646" Click="Disable" Foreground="#FFD0D0D0" BorderBrush="#00707070"/>
         <Button Name="allBut" Content="All" HorizontalAlignment="Left" Margin="156,361,0,0" VerticalAlignment="Top" Height="33" Width="73" Background="#FF464646" Click="Roll" Foreground="#FFD0D0D0" BorderBrush="#00707070"/>
         <Button Content="Top" HorizontalAlignment="Left" Margin="239,361,0,0" VerticalAlignment="Top" Height="33" Width="73" Background="#FF464646" Click="Roll" Foreground="#FFD0D0D0" BorderBrush="#00707070"/>
         <Button Content="Jgl" HorizontalAlignment="Left" Margin="322,361,0,0" VerticalAlignment="Top" Height="33" Width="73" Background="#FF464646" Click="Roll" Foreground="#FFD0D0D0" BorderBrush="#00707070"/>

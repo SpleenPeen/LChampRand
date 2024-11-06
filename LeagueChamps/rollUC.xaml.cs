@@ -21,7 +21,7 @@ namespace LeagueChamps
         {
             InitializeComponent();
             defLabel = name.Content.ToString(); //store what the default name label entry was
-            removeBut.IsEnabled = false; //disable remove button
+            disableBut.IsEnabled = false; //disable remove button
             rolledChamp = -1; //set rolled champ to -1
 
             //sort champion indexes into lists for each role
@@ -31,6 +31,8 @@ namespace LeagueChamps
 
             for (int i = 0; i < ChampController.champs.Count; i++)
             {
+                if (!ChampController.champs[i].Enabled)
+                    continue;
                 for (int x = 0; x < ChampController.champs[i].Roles.Length; x++)
                 {
                     if (ChampController.champs[i].Roles[x])
@@ -63,7 +65,7 @@ namespace LeagueChamps
             int newIndex = -1;
 
             //enable remove button
-            removeBut.IsEnabled = true;
+            disableBut.IsEnabled = true;
 
             //cast sender object as button
             Button pressed = (Button)sender;
@@ -71,8 +73,8 @@ namespace LeagueChamps
             //if pressed button is in role buttons role that lane
             if (roleButtons.Contains(pressed))
             {
-                Role role = Enum.Parse<Role>(pressed.Content.ToString());
-                var excludedList = sortedChamps[(int)role].FindAll(index => index != rolledChamp);
+                int role = roleButtons.IndexOf(pressed);
+                var excludedList = sortedChamps[role].FindAll(index => index != rolledChamp);
                 if (excludedList.Count == 0)
                     return;
                 newIndex = excludedList[rng.Next(excludedList.Count)];
@@ -85,6 +87,8 @@ namespace LeagueChamps
                     exludedChamps = ChampController.champs.FindAll(champ => champ != ChampController.champs[rolledChamp]);
                 else
                     exludedChamps = ChampController.champs;
+
+                exludedChamps = exludedChamps.FindAll(champ => champ.Enabled);
 
                 if (exludedChamps.Count == 0)
                     return;
@@ -106,7 +110,7 @@ namespace LeagueChamps
             //disable all role buttons without any champs
             foreach (Button but in roleButtons)
             {
-                if (sortedChamps[(int)Enum.Parse<Role>(but.Content.ToString())].Count() == 0)
+                if (sortedChamps[roleButtons.IndexOf(but)].Count() == 0)
                 {
                     but.IsEnabled = false;
                 }
@@ -117,40 +121,46 @@ namespace LeagueChamps
                 allBut.IsEnabled = false;
         }
 
-        private void Remove(object sender, RoutedEventArgs e)
+        private void Disable(object sender, RoutedEventArgs e)
         {
-            //MessageBoxResult conf = MessageBox.Show("Are you sure?", "Delete Confirmation", MessageBoxButton.YesNo);
+            MessageBoxResult conf = MessageBox.Show("Are you sure?", "Delete Confirmation", MessageBoxButton.YesNo);
 
-            //if (conf == MessageBoxResult.No)
-            //    return;
+            if (conf == MessageBoxResult.No)
+                return;
 
-            ////update sorted role lists
-            //foreach (Role role in ChampController.champs[rolledChamp].Roles)
-            //{
-            //    //get where the index to remove was and remove the entry
-            //    var indexToRemove = sortedChamps[(int)role].Find(num => num == rolledChamp);
-            //    sortedChamps[(int)role].Remove(rolledChamp);
-            //    //decrease entries after the one removed by one
-            //    for (int i = indexToRemove; i < sortedChamps[(int)role].Count(); i++)
-            //    {
-            //        sortedChamps[(int)role][i] -= 1;
-            //    }
-            //}
+            //update sorted role lists
+            for (int i = 0; i < sortedChamps.Length; i++)
+            {
+                if (!ChampController.champs[rolledChamp].Roles[i])
+                    continue;
 
-            //DisableEmptyRoleButs();
+                //get where the index to remove was and remove the entry
+                var indexToRemove = sortedChamps[i].Find(num => num == rolledChamp);
+                sortedChamps[i].Remove(rolledChamp);
 
-            ////remove champion
-            //ChampController.champs.RemoveAt(rolledChamp);
-            //ChampController.SaveData();
+                //decrease entries after the one removed by one
+                for (int x = indexToRemove; x < sortedChamps[i].Count(); x++)
+                {
+                    sortedChamps[i][x] -= 1;
+                }
+            }
 
-            ////disable remove button
-            //removeBut.IsEnabled = false;
+            rollImg.Source = null;
 
-            ////reset name label
-            //name.Content = defLabel;
+            DisableEmptyRoleButs();
 
-            ////set rolled champ to -1
-            //rolledChamp = -1;
+            //remove champion
+            ChampController.champs[rolledChamp].Enabled = false;
+            ChampController.SaveData();
+
+            //disable remove button
+            disableBut.IsEnabled = false;
+
+            //reset name label
+            name.Content = defLabel;
+
+            //set rolled champ to -1
+            rolledChamp = -1;
         }
     }
 }

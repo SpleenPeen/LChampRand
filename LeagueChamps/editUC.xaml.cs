@@ -66,11 +66,11 @@ namespace LeagueChamps
                 roles[0].Margin = new Thickness(20, 0, 0, 0);
 
                 //set role names
-                roles[0].Content = "Sup";
-                roles[1].Content = "Bot";
+                roles[0].Content = "Top";
+                roles[1].Content = "Jun";
                 roles[2].Content = "Mid";
-                roles[3].Content = "Jun";
-                roles[4].Content = "Top";
+                roles[3].Content = "Bot";
+                roles[4].Content = "Sup";
 
                 //add control buttons
                 StackPanel ctrlButs = new StackPanel();
