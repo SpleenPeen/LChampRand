@@ -6,4 +6,4 @@ To open the application simply extract the zip file and run the exe.
 
 Do mind, the application only minimizes on close.
 To fully exit the app, either right click on the tray icon and select close or press 'Alt + F4'
-(or just wait for it to crash cause im a stupid idiot and all my projects are dumb stupid bad)
+(or just wait for it to crash, however unlikely)
