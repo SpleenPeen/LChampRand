@@ -85,7 +85,7 @@ namespace LeagueChamps
                 name.Content = ChampController.champs[rolledChamp].Name;
                 try
                 {
-                    rollImg.Source = new BitmapImage(new Uri($@"imgs\{ChampController.champs[rolledChamp].Name}.png", UriKind.Relative));
+                    rollImg.Source = new BitmapImage(new Uri($@"imgs\{ChampController.champs[rolledChamp].Name}.png", UriKind.Absolute));
                 }
                 catch
                 {
@@ -107,7 +107,7 @@ namespace LeagueChamps
             name.Content = ChampController.champs[rolledChamp].Name;
             try
             {
-                rollImg.Source = new BitmapImage(new Uri($@"imgs\{ChampController.champs[rolledChamp].Name}.png", UriKind.Relative));
+                rollImg.Source = new BitmapImage(new Uri($@"imgs\{ChampController.champs[rolledChamp].Name}.png", UriKind.Absolute));
             }
             catch
             {

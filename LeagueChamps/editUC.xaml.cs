@@ -36,13 +36,9 @@ namespace LeagueChamps
                 Border brdr = new Border();
                 Image img = new Image();
 
-                try
+                if (File.Exists(@$"imgs\{ChampController.champs[i].Name}.png"))
                 {
-                    img.Source = new BitmapImage(new Uri($@"imgs\{ChampController.champs[i].Name}.png", UriKind.Relative));
-                }
-                catch
-                {
-
+                    img.Source = new BitmapImage(new Uri($@"{Directory.GetCurrentDirectory()}\imgs\{ChampController.champs[i].Name}.png", UriKind.Absolute));
                 }
                 img.Width = 40;
                 img.Height = 40;
@@ -155,7 +151,7 @@ namespace LeagueChamps
             try
             {
                 var curImg = curPan.Children.OfType<Border>().ToArray()[0].Child as Image;
-                curImg.Source = new BitmapImage(new Uri($@"imgs\{ChampController.champs[curChampInd].Name}.png", UriKind.Relative));
+                curImg.Source = new BitmapImage(new Uri($@"imgs\{ChampController.champs[curChampInd].Name}.png", UriKind.Absolute));
             }
             catch
             {

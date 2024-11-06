@@ -18,7 +18,7 @@
         <Label Content="Roles" HorizontalAlignment="Left" Margin="425,190,0,0" VerticalAlignment="Top" FontSize="16" Foreground="#FFD0D0D0"/>
         <Button Content="Add" HorizontalAlignment="Left" Margin="530,255,0,0" VerticalAlignment="Top" Height="37" Width="67" Click="Button_Click"/>
         <Border AllowDrop="True" DragDrop.Drop="DragImg" BorderThickness="1" BorderBrush="White" HorizontalAlignment="Left" Height="82" Margin="234,263,0,0" VerticalAlignment="Top" Width="90">
-            <Image Source="/imgs/Aatrox.png"/>
+            <Image Height="82" Width="90" x:Name="addImg" Source="/imgs/Aatrox.png"/>
         </Border>
     </Grid>
 </UserControl>

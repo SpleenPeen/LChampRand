@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
+using System.Windows.Media.Imaging;
 
 namespace LeagueChamps
 {
@@ -43,7 +44,17 @@ namespace LeagueChamps
 
         private void DragImg(object sender, DragEventArgs e)
         {
-            MessageBox.Show(e.Data.ToString());
+            if (e.Data.GetDataPresent(DataFormats.FileDrop))
+            {
+                string[] filepath = (string[])e.Data.GetData(DataFormats.FileDrop);
+
+                if (filepath.Length > 0)
+                {
+                    BitmapImage img = new BitmapImage(new Uri(filepath[0], UriKind.Absolute));
+                    addImg.Source = img;
+                    MessageBox.Show(filepath[0]);
+                }
+            }
         }
     }
 }
