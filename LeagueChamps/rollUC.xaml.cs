@@ -1,18 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace LeagueChamps
 {
@@ -68,6 +58,9 @@ namespace LeagueChamps
 
         private void Roll(object sender, RoutedEventArgs e)
         {
+            //new index variable
+            int newIndex = -1;
+
             //enable remove button
             removeBut.IsEnabled = true;
 
@@ -81,38 +74,30 @@ namespace LeagueChamps
                 var excludedList = sortedChamps[(int)role].FindAll(index => index != rolledChamp);
                 if (excludedList.Count == 0)
                     return;
-                rolledChamp = excludedList[rng.Next(excludedList.Count)];
-                name.Content = ChampController.champs[rolledChamp].Name;
-                try
-                {
-                    rollImg.Source = new BitmapImage(new Uri($@"imgs\{ChampController.champs[rolledChamp].Name}.png", UriKind.Absolute));
-                }
-                catch
-                {
-
-                }
-                return;
+                newIndex = excludedList[rng.Next(excludedList.Count)];
             }
-
-            //otherwise roll from all champions 
-            List<Champion> exludedChamps;
-            if (rolledChamp != -1)
-                exludedChamps = ChampController.champs.FindAll(champ => champ != ChampController.champs[rolledChamp]);
             else
-                exludedChamps = ChampController.champs;
+            {
+                //otherwise roll from all champions 
+                List<Champion> exludedChamps;
+                if (rolledChamp != -1)
+                    exludedChamps = ChampController.champs.FindAll(champ => champ != ChampController.champs[rolledChamp]);
+                else
+                    exludedChamps = ChampController.champs;
 
-            if (exludedChamps.Count == 0)
-                return;
-            rolledChamp = ChampController.champs.IndexOf(exludedChamps[rng.Next(exludedChamps.Count())]);
+                if (exludedChamps.Count == 0)
+                    return;
+                newIndex = ChampController.champs.IndexOf(exludedChamps[rng.Next(exludedChamps.Count())]);
+            }
+
+            SelectChamp(newIndex);
+        }
+
+        private void SelectChamp(int newIndex)
+        {
+            rolledChamp = newIndex;
             name.Content = ChampController.champs[rolledChamp].Name;
-            try
-            {
-                rollImg.Source = new BitmapImage(new Uri($@"imgs\{ChampController.champs[rolledChamp].Name}.png", UriKind.Absolute));
-            }
-            catch
-            {
-
-            }
+            ImgHandler.SetImage(rollImg, ChampController.champs[rolledChamp]);
         }
 
         private void DisableEmptyRoleButs()

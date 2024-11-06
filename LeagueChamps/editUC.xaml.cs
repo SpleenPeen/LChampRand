@@ -14,6 +14,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Text.Json;
 using System.IO;
+using System.Xml.Linq;
 
 namespace LeagueChamps
 {
@@ -35,11 +36,7 @@ namespace LeagueChamps
                 //image
                 Border brdr = new Border();
                 Image img = new Image();
-
-                if (File.Exists(@$"imgs\{ChampController.champs[i].Name}.png"))
-                {
-                    img.Source = new BitmapImage(new Uri($@"{Directory.GetCurrentDirectory()}\imgs\{ChampController.champs[i].Name}.png", UriKind.Absolute));
-                }
+                ImgHandler.SetImage(img, ChampController.champs[i]);
                 img.Width = 40;
                 img.Height = 40;
                 brdr.Child = img;
@@ -119,45 +116,28 @@ namespace LeagueChamps
             List<Role> newRoles = new List<Role>();
             int curChampInd = editPanel.Children.IndexOf(curPan) - listStartIndex;
 
-            for (int i = 0; i < VisualTreeHelper.GetChildrenCount(curPan); i++)
+            //get important children
+            TextBox curTxtBox = curPan.Children.OfType<TextBox>().First();
+            CheckBox[] curChecks = curPan.Children.OfType<CheckBox>().ToArray();
+            Image curImg = (Image)curPan.Children.OfType<Border>().First().Child;
+
+            //save name and rename img
+            if (ChampController.champs.Any(champ => champ.Name == curTxtBox.Text && ChampController.champs.IndexOf(champ) != curChampInd)) //abort if name is same as another champ
             {
-                var child = VisualTreeHelper.GetChild(curPan, i);
+                MessageBox.Show("Name already matches another champion, aborted changes");
+                return;
+            }
+            ImgHandler.RenameImage(ChampController.champs[curChampInd].Name, curTxtBox.Text, curImg);
+            ChampController.champs[curChampInd].Name = curTxtBox.Text;
 
-                if (child is TextBox)
-                {
-                    var txtBox = (TextBox)child;
-
-                    for (int x = 0; x < ChampController.champs.Count; x++)
-                    {
-                        if (ChampController.champs[x].Name == txtBox.Text && x != curChampInd)
-                        {
-                            MessageBox.Show("Name already matches another champion, aborted changes");
-                            return;
-                        }
-                    }
-
-                    ChampController.champs[curChampInd].Name = txtBox.Text;
-                }
-
-                if (child is CheckBox)
-                {
-                    var check = (CheckBox)child;
-                    if (check.IsChecked == true)
-                        newRoles.Add((Role)check.Content);
-                }
+            //save roles
+            foreach (CheckBox check in curChecks)
+            {
+                if (check.IsChecked == true)
+                    newRoles.Add((Role)check.Content);
             }
 
-            //reset image
-            try
-            {
-                var curImg = curPan.Children.OfType<Border>().ToArray()[0].Child as Image;
-                curImg.Source = new BitmapImage(new Uri($@"imgs\{ChampController.champs[curChampInd].Name}.png", UriKind.Absolute));
-            }
-            catch
-            {
-
-            }
-
+            //apply changes
             ChampController.champs[curChampInd].Roles = newRoles.ToArray();
             var champ = ChampController.champs[curChampInd];
             ChampController.SortChamps();
@@ -183,9 +163,11 @@ namespace LeagueChamps
             StackPanel butPan = VisualTreeHelper.GetParent(curBut) as StackPanel;
             StackPanel curPan = VisualTreeHelper.GetParent(butPan) as StackPanel;
 
+            string champName = curPan.Children.OfType<TextBox>().First().Text;
             ChampController.champs.RemoveAt(editPanel.Children.IndexOf(curPan)-listStartIndex);
             ChampController.SaveData();
             editPanel.Children.Remove(curPan);
+            ImgHandler.RemoveImage(champName);
         }
     }
 }

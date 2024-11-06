@@ -4,6 +4,8 @@ using System.Windows.Controls;
 using Form = System.Windows.Forms;
 using System.Windows.Media;
 using System;
+using System.IO;
+using System.Windows.Media.Imaging;
 
 namespace LeagueChamps
 {

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -9,6 +10,8 @@ namespace LeagueChamps
 {
     public partial class addUC : UserControl
     {
+        string imgFilepath;
+
         public addUC()
         {
             InitializeComponent();
@@ -39,7 +42,14 @@ namespace LeagueChamps
                 }
             }
 
-            ChampController.AddChampion(name, list.ToArray());
+            if(ChampController.AddChampion(name, list.ToArray()))
+            {
+                if (imgFilepath == null)
+                    return;
+                ImgHandler.CopyImage(imgFilepath, name);
+                imgFilepath = null;
+                addImg.Source = null;
+            }
         }
 
         private void DragImg(object sender, DragEventArgs e)
@@ -50,9 +60,9 @@ namespace LeagueChamps
 
                 if (filepath.Length > 0)
                 {
+                    imgFilepath = filepath[0];
                     BitmapImage img = new BitmapImage(new Uri(filepath[0], UriKind.Absolute));
                     addImg.Source = img;
-                    MessageBox.Show(filepath[0]);
                 }
             }
         }

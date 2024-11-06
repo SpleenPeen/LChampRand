@@ -53,7 +53,7 @@ namespace LeagueChamps
             return neededSorting;
         }
 
-        public static void AddChampion(string name, Role[] roles)
+        public static bool AddChampion(string name, Role[] roles)
         {
             try
             {
@@ -112,12 +112,13 @@ namespace LeagueChamps
                 SortChamps();
                 SaveData();
                 MessageBox.Show("Added successfully");
-                
+                return true;
             }
             catch (Exception ex)
             {
                 //display error message
                 MessageBox.Show(ex.Message);
+                return false;
             }
         }
     }
