@@ -38,13 +38,6 @@ namespace LeagueChamps
             close = false;
             notifIcon.ContextMenuStrip = new Form.ContextMenuStrip();
             notifIcon.ContextMenuStrip.Items.Add("Close", null, OnCloseClick);
-
-            DirectoryInfo d = new DirectoryInfo(ImgHandler.FilePath);
-
-            foreach (var file in d.GetFiles("*.png"))
-            {
-                ChampController.AddChampion(file.Name.Remove(file.Name.Length-4), new bool[5]);
-            }
         }
 
         private void SwitchScreen(UserControl cntrl, Button but)
